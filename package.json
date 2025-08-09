@@ -1,0 +1,17 @@
+{
+  "name": "webstormprojects",
+  "version": "1.0.0",
+  "description": "https://200lab.io/blog/typescript-la-gi\r https://200lab.io/blog/typescript-syntax-co-ban-phan-1\r https://200lab.io/blog/typescript-syntax-co-ban-phan-2",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:dev": "ts-node basic-ts-syntax-and-oop.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
+  }
+}
