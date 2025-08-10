@@ -42,3 +42,11 @@ Trong ***TypeScript***:
 - Lưu trữ địa chỉ của giá trị trong biến.
 - Khi gán một biến kiểu tham chiếu cho biến khác, cả hai đều trỏ đến cùng một giá trị trong bộ nhớ.
 
+### Function
+- Regular function:
+  - (this, supper, arguments)
+  - Được quyết định lại `this` nằm ở đâu bằng `bind()`.
+- Arrow function
+  - Không có chức năng `bind()` nên không thay đổi được `this`.
+  - Vì vậy cũng không có `super`.
+
