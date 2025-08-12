@@ -18,6 +18,8 @@ console.log(testSympol);
 
 console.log('/* ---------------------------- */')
 
+console.log('Kiểu tham chiếu')
+
 let a = 1
 let b = 5
 a = b // x = 5
@@ -27,6 +29,7 @@ console.log('b = ', b);
 
 console.log('/* ---------------------------- */')
 
+console.log('Kiểu tham trị')
 // Kiểu tham trị
 let x = {a: 1, b: 2}
 let y = x // y.a = 1, y.b = 2
@@ -177,6 +180,7 @@ console.log(myBuffalo.eat());
 
 console.log('/* ---------------------------- */')
 
+console.log('Test framework, engine');
 // Framework
 abstract class Element {
     abstract render(): string
@@ -200,10 +204,26 @@ class TextElement extends Element {
     }
 }
 
-const res = engine([new ImageElement(), new TextElement()])
+class HyperText extends TextElement {
+    // Override
+    render(a?: number): any {
+        if (!a) return 'hyper-text';
+        else return a;
+    }
+
+    // Overload - Chỉ cần cùng tên, có thể khác tham số, khác
+    // render(a: number) {
+    //     return a;
+    // }
+}
+
+const res = engine([new ImageElement(), new TextElement(), new HyperText()]);
+console.log('Test Hyper element res: ' + new HyperText().render(100000000));
 console.log(res)
 
 console.log('/* ---------------------------- */')
+
+console.log('Example of Encapsulation')
 
 class CarEngine {
     public start() {
@@ -227,6 +247,8 @@ const myCarEngine = new CarEngine();
 console.log(myCarEngine.start());
 
 console.log('/* ---------------------------- */')
+
+console.log('Example of Abstraction')
 
 abstract class Engine {
     abstract start(): void
@@ -292,4 +314,98 @@ console.log(myAccount);
 console.log(myAccount.getBalance());
 console.log(myAccount.deposit(100));
 
-// Video 1: 1h56p
+console.log('/* ---------------------------- */')
+
+// Problem: A messy class
+class Item {
+    public id: string;
+    public spec: ItemSpect;
+    private imageUrl: string;
+    public price: number;
+    public quantity: number;
+
+    constructor(
+        id: string,
+        spec: ItemSpect,
+        imageUrl: string,
+        price: number,
+        quantity: number,
+    ) {
+        this.id = id;
+        this.spec = spec;
+        this.imageUrl = imageUrl;
+        this.price = price;
+        this.quantity = quantity;
+    }
+
+    // Getter & Setter
+
+    setPrice(newPrice: number): boolean {
+        if (newPrice <= 0) {
+            return false;
+        }
+        this.price = newPrice;
+        return true;
+    }
+
+    increaseQuantity(amount: number) {
+        if (amount < 0) return false;
+
+        this.quantity += amount;
+        return true;
+    }
+
+    decreaseQuantity(amount: number) {
+        if (amount > 0 || (this.quantity - amount < 0)) return false;
+
+        this.quantity -= amount;
+        return true;
+    }
+
+    compare(spec: ItemSpect): boolean {
+        return this.spec.compare(spec)
+    }
+
+    encode(encoder: IIeamEncoder): string {
+        return encoder.encode(this);
+    }
+}
+
+class ItemSpect {
+    constructor(
+        readonly name: string,
+        readonly type: string,
+        readonly color: string,
+    ) {}
+
+    compare(item: ItemSpect): boolean {
+        return this.name === item.name &&
+            this.type === item.type &&
+            this.color === item.color;
+    }
+}
+
+console.log('Single Responsibility Principle')
+
+console.log('/* ---------------------------- */')
+
+interface IIeamEncoder {
+    encode(item: Item): string;
+}
+
+class ItemStringEncoder implements IIeamEncoder {
+    encode(item: Item): string {
+        return `${item.id} - ${item.spec.name} - ${item.spec.type} - ${item.spec.color}`;
+    }
+}
+
+class ItemJSONEncoder implements IIeamEncoder {
+    encode(item: Item): string {
+        return `{
+            "id": ${item.id},
+            "name": ${item.spec.name},
+            "type": ${item.spec.type},
+            "color": ${item.spec.color},
+        }`;
+    }
+}

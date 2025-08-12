@@ -161,7 +161,14 @@ console.log(testStringArrowFunc);
 **Tóm tắt**: Bảo vệ dữ liệu, kiểm soát quyền truy cập, về tính bảo mật
 
 ##### **🔄 Inheritance (Tính Kế Thừa)**
-*Sẽ được trình bày trong bài tiếp theo*
-
 ##### **🔄 Polymorphism (Tính Đa Hình)**
-*Sẽ được trình bày trong bài tiếp theo*
+
+#### **3. SOLID**
+- Single responsibility principle (đơn nhiệm vụ)
+  - Một `Class` chỉ nên có duy nhất 1 nhiệm vụ. Vì như thế thì khả năng thay đổi chương trình dễ hơn, có thể tác động vào cụ thể hơn trong một `Class` mà thôi. Nên tách ra để dễ maintain.
+  - Ví dụ: Muỗng + Nĩa kết hợp, tuy nhiên không cần thiết phải như thế vì mình hiếm khi sử dụng.
+- Open/closed principle (thoải mãi/hạn chế)
+  - Khi đã làm được nguyên lý S thì tức nghĩa đã làm được nguyên lý O.
+  - Những thực thể phần mềm nên được thoải mái trong việc mở rộng, nhưng lại hạn chế cho việc thay đổi.
+  - Chỉ cho phép thay đổi hành vi, nếu bị lỗi thì phải mở vào để sửa.
+- Liskov substitution
