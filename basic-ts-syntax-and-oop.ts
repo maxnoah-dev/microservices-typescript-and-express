@@ -319,14 +319,14 @@ console.log('/* ---------------------------- */')
 // Problem: A messy class
 class Item {
     public id: string;
-    public spec: ItemSpect;
+    public spec: ItemSpec;
     private imageUrl: string;
     public price: number;
     public quantity: number;
 
     constructor(
         id: string,
-        spec: ItemSpect,
+        spec: ItemSpec,
         imageUrl: string,
         price: number,
         quantity: number,
@@ -362,7 +362,7 @@ class Item {
         return true;
     }
 
-    compare(spec: ItemSpect): boolean {
+    compare(spec: ItemSpec): boolean {
         return this.spec.compare(spec)
     }
 
@@ -371,19 +371,41 @@ class Item {
     }
 }
 
-class ItemSpect {
+class ItemSpec {
     constructor(
         readonly name: string,
         readonly type: string,
         readonly color: string,
     ) {}
 
-    compare(item: ItemSpect): boolean {
+    compare(item: ItemSpec): boolean {
         return this.name === item.name &&
             this.type === item.type &&
             this.color === item.color;
     }
 }
+
+class DigitalItemSpec extends ItemSpec {
+    constructor(
+        readonly name: string,
+        readonly type: string,
+        readonly color: string,
+        readonly fileExt: string,
+    ) {
+        super(name, type, color);
+    }
+
+    compare(item: DigitalItemSpec) {
+        // return this.fileExt = item.fileExt; // bug
+        return super.compare(item) &&
+            this.fileExt === item.fileExt;
+    }
+}
+
+// === compare without convert
+// == compare with some convert data
+// 0 == false
+// 1 == "1" => true vì convert về cùng một type
 
 console.log('Single Responsibility Principle')
 
@@ -409,3 +431,64 @@ class ItemJSONEncoder implements IIeamEncoder {
         }`;
     }
 }
+
+// class ItemWrongEncoder implements IIeamEncoder {
+//     encode(item: Item): string {
+//         throw new Error('error');
+//         return '';
+//     }
+// }
+
+console.log('/* ---------------------------- */')
+
+class Retangle {
+    width: number;
+    height: number;
+
+    constructor(
+        width: number,
+        height: number,
+    ) {
+        this.width = width;
+        this.height = height;
+    }
+
+    setWidth(width: number) {
+        this.width = width;
+    }
+
+    setHeight(height: number) {
+        this.height = height;
+    }
+
+    area(): number {
+        return this.width * this.height;
+    }
+}
+
+class Square extends Retangle {
+    constructor(height: number, width: number) {
+        super(height, width);
+    }
+
+    setWidth(width: number) {
+        this.width = width;
+    }
+
+    setHeight(height: number) {
+        this.height = height;
+    }
+
+    area(): number {
+        return this.width * this.height;
+    }
+}
+
+const myApp1 = new Retangle(5, 10);
+const myApp2 = new Square(5, 10);
+console.log(myApp1);
+console.log(myApp1.area());
+myApp1.setWidth(2);
+myApp1.setHeight(10);
+console.log("After set Width: " + myApp1);
+console.log("After set Height: " + myApp1);

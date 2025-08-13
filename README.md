@@ -163,12 +163,121 @@ console.log(testStringArrowFunc);
 ##### **🔄 Inheritance (Tính Kế Thừa)**
 ##### **🔄 Polymorphism (Tính Đa Hình)**
 
-#### **3. SOLID**
-- Single responsibility principle (đơn nhiệm vụ)
-  - Một `Class` chỉ nên có duy nhất 1 nhiệm vụ. Vì như thế thì khả năng thay đổi chương trình dễ hơn, có thể tác động vào cụ thể hơn trong một `Class` mà thôi. Nên tách ra để dễ maintain.
-  - Ví dụ: Muỗng + Nĩa kết hợp, tuy nhiên không cần thiết phải như thế vì mình hiếm khi sử dụng.
-- Open/closed principle (thoải mãi/hạn chế)
-  - Khi đã làm được nguyên lý S thì tức nghĩa đã làm được nguyên lý O.
-  - Những thực thể phần mềm nên được thoải mái trong việc mở rộng, nhưng lại hạn chế cho việc thay đổi.
-  - Chỉ cho phép thay đổi hành vi, nếu bị lỗi thì phải mở vào để sửa.
-- Liskov substitution
+#### **3. SOLID Principles**
+
+##### **🎯 S - Single Responsibility Principle (Nguyên lý Đơn nhiệm vụ)**
+**Mục đích**: Một `Class` chỉ nên có duy nhất 1 nhiệm vụ, 1 lý do để thay đổi.
+
+**Lợi ích**: 
+- Dễ maintain và test
+- Ít ảnh hưởng khi thay đổi
+- Code rõ ràng, dễ hiểu
+
+**Ví dụ**: 
+- ❌ **Sai**: Class `User` vừa quản lý thông tin user, vừa gửi email, vừa validate data
+- ✅ **Đúng**: Tách thành `User` (quản lý thông tin), `EmailService` (gửi email), `UserValidator` (validate)
+
+##### **🔓 O - Open/Closed Principle (Nguyên lý Mở/Đóng)**
+**Mục đích**: Software entities nên **mở để mở rộng** nhưng **đóng để sửa đổi**.
+
+**Cách thực hiện**: Sử dụng abstraction, inheritance, và polymorphism
+- **Mở rộng**: Thêm class mới kế thừa từ base class
+- **Không sửa**: Không thay đổi code của base class
+
+**Ví dụ**: 
+```typescript
+// Base class - không thay đổi
+abstract class PaymentMethod {  
+    abstract processPayment(amount: number): boolean;
+}
+
+// Mở rộng - thêm class mới
+class CreditCardPayment extends PaymentMethod {
+    processPayment(amount: number): boolean {   
+        // Logic xử lý credit card
+        return true;
+    }
+}
+
+class PayPalPayment extends PaymentMethod {
+    processPayment(amount: number): boolean {
+        // Logic xử lý PayPal
+        return true;
+    }
+}
+```
+
+##### **🔄 L - Liskov Substitution Principle (Nguyên lý Thay thế Liskov)**
+**Mục đích**: Subtypes phải có thể thay thế base types mà không làm thay đổi tính đúng đắn của chương trình.
+
+**Quy tắc**: 
+- Subclass phải implement đầy đủ interface của base class
+- Không được làm yếu đi các điều kiện của base class
+
+**Ví dụ**: 
+- ✅ **Đúng**: `Rectangle` và `Square` đều có thể thay thế cho `Shape` (cùng có method `getArea()`)
+- ❌ **Sai**: `Penguin` kế thừa từ `Bird` nhưng không thể bay (vi phạm contract của base class)
+
+##### **🔌 I - Interface Segregation Principle (Nguyên lý Phân tách Interface)**
+**Mục đích**: Clients không nên bị ép buộc implement những methods mà họ không sử dụng.
+
+**Cách thực hiện**: Tách interface lớn thành nhiều interface nhỏ, chuyên biệt
+
+**Ví dụ**: 
+```typescript
+// ❌ Sai: Interface quá lớn
+interface Worker {
+    work(): void;
+    eat(): void;
+    sleep(): void;
+}
+
+// ✅ Đúng: Tách thành nhiều interface nhỏ
+interface Workable {
+    work(): void;
+}
+
+interface Eatable {
+    eat(): void;
+}
+
+interface Sleepable {
+    sleep(): void;
+}
+
+// Robot chỉ cần implement Workable
+class Robot implements Workable {
+    work(): void {
+        console.log("Robot working...");
+    }
+}
+```
+
+##### **📦 D - Dependency Inversion Principle (Nguyên lý Đảo ngược Phụ thuộc)**
+**Mục đích**: 
+- High-level modules không nên phụ thuộc vào low-level modules
+- Cả hai nên phụ thuộc vào abstractions
+- Abstractions không nên phụ thuộc vào details
+
+**Cách thực hiện**: Sử dụng dependency injection và interfaces
+
+**Ví dụ**: 
+```typescript
+// ❌ Sai: High-level phụ thuộc trực tiếp vào low-level
+class UserService {
+    private database = new MySQLDatabase(); // Phụ thuộc cứng
+}
+
+// ✅ Đúng: Phụ thuộc vào abstraction
+interface Database {
+    save(data: any): void;
+}
+
+class UserService {
+    constructor(private database: Database) {} // Dependency injection
+}
+
+// Có thể inject bất kỳ database nào implement interface Database
+const userService = new UserService(new MySQLDatabase());
+const userService2 = new UserService(new MongoDBDatabase());
+```
