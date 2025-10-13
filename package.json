@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start:dev": "ts-node basic-ts-syntax-and-oop.ts"
+    "start:dev": "ts-node solid.ts"
   },
   "keywords": [],
   "author": "",

@@ -261,7 +261,7 @@ class Robot implements Workable {
 
 **Cách thực hiện**: Sử dụng dependency injection và interfaces
 
-**Ví dụ**: 
+**Ví dụ 1**: 
 ```typescript
 // ❌ Sai: High-level phụ thuộc trực tiếp vào low-level
 class UserService {
@@ -280,4 +280,41 @@ class UserService {
 // Có thể inject bất kỳ database nào implement interface Database
 const userService = new UserService(new MySQLDatabase());
 const userService2 = new UserService(new MongoDBDatabase());
+```
+
+**Ví dụ 2**: 
+```typescript
+// 1. Abstraction
+export interface MailService {
+  send(to: string, subject: string, body: string): Promise<void>;
+}
+
+// 2. Implementation 1 - Gmail
+export class GmailService implements MailService {
+  async send(to: string, subject: string, body: string): Promise<void> {
+    console.log(`Send email to ${to} via Gmail`);
+  }
+}
+
+// 3. Implementation 2 - SendGrid
+export class SendGridService implements MailService {
+  async send(to: string, subject: string, body: string): Promise<void> {
+    console.log(`Send email to ${to} via SendGrid`);
+  }
+}
+
+// 4. High-level module
+export class UserService {
+  constructor(private mailService: MailService) {}
+
+  async registerUser(email: string) {
+    // Business logic
+    await this.mailService.send(email, 'Welcome', 'Thank you for registering!');
+  }
+}
+
+// 5. Composition Root
+const mailService = new GmailService(); // có thể đổi sang SendGridService
+const userService = new UserService(mailService);
+userService.registerUser('example@mail.com');
 ```
