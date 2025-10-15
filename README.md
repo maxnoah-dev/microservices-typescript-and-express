@@ -373,7 +373,7 @@ Tables:
 
 ### Các thuộc tính của Entity
 - Có thể tìm thấy trên các màn hình chi tiết.
-- Và một số màn hình listing
+- Và một số màn hình listing hoặc các UI khác.
 
 **Product Modeling:**
 - id varchar(36)/binary(16) (pk)
@@ -404,3 +404,4 @@ Product Review:
 - tinyint(1) - boolean
 - Nên dùng datetime vì nó mới, timestamp quá cũ
 
+1h58s
