@@ -318,3 +318,89 @@ const mailService = new GmailService(); // có thể đổi sang SendGridService
 const userService = new UserService(mailService);
 userService.registerUser('example@mail.com');
 ```
+
+## Entity, Model Database
+
+### User Story Template
+
+- Một format chuẩn để viết User Stories trong phát triển phần mềm!
+
+```
+Template: As a/an {{user_role}}, I should be able to {{action}} [, so that/then ...]
+```
+Các thành phần:
+1. {{user_role}} - Vai trò người dùng
+2. {{action}} - Hành động mà người dùng muốn thực hiện
+3. [, so that/then ...] - Lý do/mục đích (tùy chọn)
+
+**Example 1: E-commerce**
+```
+As a customer, I should be able to add products to my cart, so that I can purchase multiple items at once.
+```
+**Example 2: Banking System**
+```
+As a bank manager, I should be able to view all customer transactions, so that I can monitor account activity.
+```
+**Ví dụ trong Microservices:**
+```
+As a microservice consumer, I should be able to call user service API, so that I can get user information.
+
+As a system administrator, I should be able to monitor service health, so that I can ensure system reliability.
+
+As a developer, I should be able to configure service endpoints, so that I can integrate with other services.
+```
+
+
+Nouns: customer, product, cart, item
+Tables:
+1. User (users)
+2. Order (orders) 
+3. Order Shipping (order_shippings)
+4. Product (products)
+5. Shopping Cart (shopping_carts)
+6. ...
+
+#### Lợi ích
+- Rõ ràng - Ai làm gì, tại sao
+- Tập trung vào người dùng - Không phải technical details
+- Dễ hiểu - Cả technical và non-technical team
+- Testable - Có thể viết test cases từ user stories
+- Prioritizable - Dễ ưu tiên theo business value
+#### Lưu ý
+- Tên Entity nên là "số ít" (singular form).
+- Tên Table nên là "số nhiều" (plural form).
+- Ưu tiên các tính năng cốt lõi, quan trọng nhất.
+
+### Các thuộc tính của Entity
+- Có thể tìm thấy trên các màn hình chi tiết.
+- Và một số màn hình listing
+
+**Product Modeling:**
+- id varchar(36)/binary(16) (pk)
+- images json
+- name varchar(150)
+- quantity unsigned int(6)
+- short_description text/varchar(255)
+- colors json (simple way)
+- sizes json (simple way)
+- is_free_delivery tinyint(1)
+- max_free_return_days unsigned int(2)
+- status enum('active', 'inactive')
+- created_at timstamp/datetime
+- update_at timestamp/datetime
+
+Product Review:
+- id varchar(36) (pk)
+- user_id varchar(36)
+- product_id varchar(36)
+- content text
+- score unsigned int(2)
+- status enum('active', 'inactive', 'deleted')
+- created_at datetime
+- update_at datetime
+
+**Note:**
+- binary(16) best practice là binary(16 bypes), tuy nhiên khó khăn là khi insert xuống DB thì phải chuyển UUID về binary là 1, khi đọc lên thì phải chuyển Binary sang String là khó khăn thứ 2
+- tinyint(1) - boolean
+- Nên dùng datetime vì nó mới, timestamp quá cũ
+
